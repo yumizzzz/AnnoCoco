@@ -13,6 +13,8 @@ from pydantic import BaseModel
 
 
 class Info(BaseModel):
+    """COCOformatのinfoを管理するクラス"""
+
     year: int | None = None
     version: str | None = None
     description: str | None = None
@@ -22,6 +24,8 @@ class Info(BaseModel):
 
 
 class Images(BaseModel):
+    """COCOformatのimagesを管理するクラス"""
+
     id: int
     width: int
     height: int
@@ -33,6 +37,8 @@ class Images(BaseModel):
 
 
 class Annotations(BaseModel):
+    """COCOformatのannotationsを管理するクラス"""
+
     id: int | None
     image_id: int | None
     category_id: int | None
@@ -43,12 +49,16 @@ class Annotations(BaseModel):
 
 
 class Licenses(BaseModel):
+    """COCOformatのlicensesを管理するクラス"""
+
     id: int | None
     name: str | None
     url: str | None
 
 
 class Categories(BaseModel):
+    """COCOformatのcategoriesを管理するクラス"""
+
     id: int | None
     name: str | None
     supercategory: str | None
@@ -60,6 +70,7 @@ class COCO:
     def __init__(self, json_data: dict):
         self.json_data = json_data
 
+        # COCOformatの各要素を登録
         self._info: Info = self._registry_info()
         self._images: list[Images] = self._registry_images()
         self._annotations: list[Annotations] = self._registry_annotations()
