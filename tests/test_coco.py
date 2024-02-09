@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Dict, List
 
 from annococo.coco import COCO, Annotations, Categories, Images, Info, Licenses
 
 
-def test_info(sample_info: dict[str, Any]):
+def test_info(sample_info: Dict[str, Any]):
     """Infoクラスのテスト"""
 
     info = Info(**sample_info)
@@ -16,7 +16,7 @@ def test_info(sample_info: dict[str, Any]):
     assert info.date_created == datetime(2021, 10, 1).isoformat()
 
 
-def test_images(sample_images: list[dict[str, Any]]):
+def test_images(sample_images: List[Dict[str, Any]]):
     """Imagesクラスのテスト"""
 
     for image_data in sample_images:
@@ -31,7 +31,7 @@ def test_images(sample_images: list[dict[str, Any]]):
         assert image.date_captured == image_data["date_captured"]
 
 
-def test_annotations(sample_annotations: list[dict[str, Any]]):
+def test_annotations(sample_annotations: List[Dict[str, Any]]):
     """Annotationsクラスのテスト"""
 
     for annotation_data in sample_annotations:
@@ -45,7 +45,7 @@ def test_annotations(sample_annotations: list[dict[str, Any]]):
         assert annotation.iscrowd == annotation_data["iscrowd"]
 
 
-def test_licenses(sample_licenses: list[dict[str, Any]]):
+def test_licenses(sample_licenses: List[Dict[str, Any]]):
     """Licensesクラスのテスト"""
 
     for license_data in sample_licenses:
@@ -55,7 +55,7 @@ def test_licenses(sample_licenses: list[dict[str, Any]]):
         assert license.url == license_data["url"]
 
 
-def test_categories(sample_categories: list[dict[str, Any]]):
+def test_categories(sample_categories: List[Dict[str, Any]]):
     """Categoriesクラスのテスト"""
 
     for category_data in sample_categories:
@@ -65,7 +65,7 @@ def test_categories(sample_categories: list[dict[str, Any]]):
         assert category.supercategory == category_data["supercategory"]
 
 
-def test_coco(sample_coco: dict[str, Any]):
+def test_coco(sample_coco: Dict[str, Any]):
     """COCOクラスのテスト"""
     coco = COCO(sample_coco)
 
