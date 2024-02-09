@@ -1,15 +1,15 @@
 from datetime import datetime
-from typing import Any
+from typing import Any, Dict, List
 
 import pytest
 
 
 @pytest.fixture
-def sample_info() -> dict[str, Any]:
+def sample_info() -> Dict[str, Any]:
     """COCOFormatのinfoに関するサンプルデータを作成
 
     Returns:
-        dict: infoのサンプルデータ
+        Dict: infoのサンプルデータ
     """
     return {
         "year": 2021,
@@ -22,11 +22,11 @@ def sample_info() -> dict[str, Any]:
 
 
 @pytest.fixture
-def sample_images() -> list[dict]:
+def sample_images() -> List[Dict[str, Any]]:
     """COOCFormatのimagesに関するサンプルデータを作成
 
     Returns:
-        list[dict]: imagesのサンプルデータ
+        List[Dict]: imagesのサンプルデータ
     """
     return [
         {
@@ -53,11 +53,11 @@ def sample_images() -> list[dict]:
 
 
 @pytest.fixture
-def sample_annotations() -> list[dict]:
+def sample_annotations() -> List[Dict[str, Any]]:
     """COOCFormatのannotationsに関するサンプルデータを作成
 
     Returns:
-        list[dict]: annotationsのサンプルデータ
+        List[Dict]: annotationsのサンプルデータ
     """
     return [
         {
@@ -82,11 +82,11 @@ def sample_annotations() -> list[dict]:
 
 
 @pytest.fixture
-def sample_licenses() -> list[dict]:
+def sample_licenses() -> List[Dict[str, Any]]:
     """COOCFormatのlicensesに関するサンプルデータを作成
 
     Returns:
-        list[dict]: licensesのサンプルデータ
+        List[Dict]: licensesのサンプルデータ
     """
     return [
         {
@@ -103,11 +103,11 @@ def sample_licenses() -> list[dict]:
 
 
 @pytest.fixture
-def sample_categories() -> list[dict]:
+def sample_categories() -> List[Dict[str, Any]]:
     """COOCFormatのcategoriesに関するサンプルデータを作成
 
     Returns:
-        list[dict]: categoriesのサンプルデータ
+        List[Dict]: categoriesのサンプルデータ
     """
     return [
         {
@@ -125,23 +125,23 @@ def sample_categories() -> list[dict]:
 
 @pytest.fixture
 def sample_coco(
-    sample_info: dict[str, Any],
-    sample_images: list[dict],
-    sample_annotations: list[dict],
-    sample_licenses: list[dict],
-    sample_categories: list[dict],
-) -> dict[str, Any]:
+    sample_info: Dict[str, Any],
+    sample_images: List[Dict[str, Any]],
+    sample_annotations: List[Dict[str, Any]],
+    sample_licenses: List[Dict[str, Any]],
+    sample_categories: List[Dict[str, Any]],
+) -> Dict[str, Any]:
     """COCOFormatのサンプルデータを作成
 
     Args:
-        sample_info (dict[str, Any]): infoのサンプルデータ
-        sample_images (list[dict]): imagesのサンプルデータ
-        sample_annotations (list[dict]): annotationsのサンプルデータ
-        sample_licenses (list[dict]): licensesのサンプルデータ
-        sample_categories (list[dict]): categoriesのサンプルデータ
+        sample_info (Dict[str, Any]): infoのサンプルデータ
+        sample_images (List[Dict[str, Any]]): imagesのサンプルデータ
+        sample_annotations (List[Dict[str, Any]]): annotationsのサンプルデータ
+        sample_licenses (List[Dict[str, Any]]): licensesのサンプルデータ
+        sample_categories (List[Dict[str, Any]]): categoriesのサンプルデータ
 
     Returns:
-        dict: COCOのサンプルデータ
+        Dict: COCOのサンプルデータ
     """
     return {
         "info": sample_info,

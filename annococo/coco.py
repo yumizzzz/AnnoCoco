@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, List, Literal, Optional, Union
 
 from pydantic import BaseModel
 
@@ -15,12 +15,12 @@ from pydantic import BaseModel
 class Info(BaseModel):
     """COCOformatのinfoを管理するクラス"""
 
-    year: int | None = None
-    version: str | None = None
-    description: str | None = None
-    contributor: str | None = None
-    url: str | None = None
-    date_created: str | None = None
+    year: Optional[int] = None
+    version: Optional[str] = None
+    description: Optional[str] = None
+    contributor: Optional[str] = None
+    url: Optional[str] = None
+    date_created: Optional[str] = None
 
 
 class Images(BaseModel):
@@ -30,38 +30,38 @@ class Images(BaseModel):
     width: int
     height: int
     file_name: str
-    license: int | None = None
-    flickr_url: str | None = None
-    coco_url: str | None = None
-    date_captured: str | None = None
+    license: Optional[int] = None
+    flickr_url: Optional[str] = None
+    coco_url: Optional[str] = None
+    date_captured: Optional[str] = None
 
 
 class Annotations(BaseModel):
     """COCOformatのannotationsを管理するクラス"""
 
-    id: int | None
-    image_id: int | None
-    category_id: int | None
-    segmentation: list[list[float]] | None
-    area: float | None
-    bbox: list[int] | None
-    iscrowd: Literal[0, 1] | None
+    id: Optional[int]
+    image_id: Optional[int]
+    category_id: Optional[int]
+    segmentation: Optional[List[List[float]]]
+    area: Optional[float]
+    bbox: Optional[List[int]]
+    iscrowd: Optional[Literal[0, 1]]
 
 
 class Licenses(BaseModel):
     """COCOformatのlicensesを管理するクラス"""
 
-    id: int | None
-    name: str | None
-    url: str | None
+    id: Optional[int]
+    name: Optional[str]
+    url: Optional[str]
 
 
 class Categories(BaseModel):
     """COCOformatのcategoriesを管理するクラス"""
 
-    id: int | None
-    name: str | None
-    supercategory: str | None
+    id: Optional[int]
+    name: Optional[str]
+    supercategory: Optional[str]
 
 
 class COCO:
@@ -72,10 +72,10 @@ class COCO:
 
         # COCOformatの各要素を登録
         self._info: Info = self._registry_info()
-        self._images: list[Images] = self._registry_images()
-        self._annotations: list[Annotations] = self._registry_annotations()
-        self._licenses: list[Licenses] = self._registry_licenses()
-        self._categories: list[Categories] = self._registry_categories()
+        self._images: List[Images] = self._registry_images()
+        self._annotations: List[Annotations] = self._registry_annotations()
+        self._licenses: List[Licenses] = self._registry_licenses()
+        self._categories: List[Categories] = self._registry_categories()
 
     @property
     def info(self) -> dict[str, Any]:
@@ -87,7 +87,7 @@ class COCO:
         return self._info.model_dump()
 
     @property
-    def images(self) -> list[dict[str, Any]]:
+    def images(self) -> List[dict[str, Any]]:
         """imagesを取得. list[dict[str, Any]]形式に変換して返す
 
         Returns:
@@ -96,7 +96,7 @@ class COCO:
         return [image.model_dump() for image in self._images]
 
     @property
-    def annotations(self) -> list[dict[str, Any]]:
+    def annotations(self) -> List[dict[str, Any]]:
         """annotationsを取得. list[dict[str, Any]]形式に変換して返す
 
         Returns:
@@ -105,7 +105,7 @@ class COCO:
         return [annotation.model_dump() for annotation in self._annotations]
 
     @property
-    def licenses(self) -> list[dict[str, Any]]:
+    def licenses(self) -> List[dict[str, Any]]:
         """licensesを取得. list[dict[str, Any]]形式に変換して返す
 
         Returns:
@@ -114,7 +114,7 @@ class COCO:
         return [license.model_dump() for license in self._licenses]
 
     @property
-    def categories(self) -> list[dict[str, Any]]:
+    def categories(self) -> List[dict[str, Any]]:
         """categoriesを取得. list[dict[str, Any]]形式に変換して返す
 
         Returns:
@@ -123,7 +123,7 @@ class COCO:
         return [category.model_dump() for category in self._categories]
 
     @classmethod
-    def load(cls, json_path: str | Path) -> COCO:
+    def load(cls, json_path: Union[str, Path]) -> COCO:
         """COCOformat形式の.jsonファイルからCOCOインスタンスを生成
 
         Args:
@@ -136,7 +136,7 @@ class COCO:
             _json_data = json.load(f)
         return cls(_json_data)
 
-    def save(self, save_path: str | Path, indent: int | None = None) -> None:
+    def save(self, save_path: Union[str, Path], indent: Optional[int] = None) -> None:
         """json形式でファイル保存
 
         Args:
@@ -156,7 +156,7 @@ class COCO:
         else:
             return Info(**self.json_data["info"])
 
-    def _registry_images(self) -> list[Images]:
+    def _registry_images(self) -> List[Images]:
         """COCOformatのimagesを登録
 
         Returns:
@@ -167,7 +167,7 @@ class COCO:
         else:
             return [Images(**image) for image in self.json_data["images"]]
 
-    def _registry_annotations(self) -> list[Annotations]:
+    def _registry_annotations(self) -> List[Annotations]:
         """COCOformatのannotationsを登録
 
         Returns:
@@ -178,7 +178,7 @@ class COCO:
         else:
             return [Annotations(**annotation) for annotation in self.json_data["annotations"]]
 
-    def _registry_licenses(self) -> list[Licenses]:
+    def _registry_licenses(self) -> List[Licenses]:
         """COCOformatのlicensesを登録
 
         Returns:
@@ -189,7 +189,7 @@ class COCO:
         else:
             return [Licenses(**license) for license in self.json_data["licenses"]]
 
-    def _registry_categories(self) -> list[Categories]:
+    def _registry_categories(self) -> List[Categories]:
         """COCOformatのcategoriesを登録
 
         Returns:
