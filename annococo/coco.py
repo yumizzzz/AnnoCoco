@@ -6,7 +6,6 @@ https://cocodataset.org/#format-data
 from __future__ import annotations
 
 import json
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal
 
@@ -19,7 +18,7 @@ class Info(BaseModel):
     description: str | None = None
     contributor: str | None = None
     url: str | None = None
-    date_created: datetime | None = None
+    date_created: str | None = None
 
 
 class Images(BaseModel):
@@ -30,7 +29,7 @@ class Images(BaseModel):
     license: int | None = None
     flickr_url: str | None = None
     coco_url: str | None = None
-    date_captured: datetime | None = None
+    date_captured: str | None = None
 
 
 class Annotations(BaseModel):
@@ -141,7 +140,7 @@ class COCO:
         Returns:
             Info: 登録したInfoクラス
         """
-        if "info" in self.json_data:
+        if "info" not in self.json_data:
             return Info()
         else:
             return Info(**self.json_data["info"])
