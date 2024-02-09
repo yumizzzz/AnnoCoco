@@ -1,0 +1,55 @@
+{
+	"editor.fontSize": 11,
+	"editor.tabSize": 4,
+	"editor.formatOnSave": true,
+	"editor.renderWhitespace": "boundary",
+	"editor.cursorStyle": "line",
+	"editor.formatOnType": true,
+	"editor.formatOnPaste": true,
+	"editor.guides.bracketPairs": true,
+	"editor.bracketPairColorization.enabled": true,
+	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+	"editor.wordWrap": "on",
+	"files.autoSave": "afterDelay",
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true,
+	"workbench.colorTheme": "GitHub Dark",
+	"workbench.iconTheme": "material-icon-theme",
+	"workbench.tree.renderIndentGuides": "always",
+	"workbench.reduceMotion": "on",
+	"workbench.editor.tabSizing": "shrink",
+	"terminal.integrated.copyOnSelection": true,
+	"terminal.integrated.rightClickBehavior": "paste",
+	"extensions.ignoreRecommendations": false,
+	"explorer.compactFolders": false,
+	"codesnap.shutterAction": "copy",
+	"[python]": {
+		"editor.defaultFormatter": "charliermarsh.ruff",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		},
+	},
+	"mypy-type-checker.args": [
+		"--ignore-missing-imports",
+		"plugins",
+		"pydantic.mypy"
+	],
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	},
+	"markdownlint.config": {
+		"MD007": false,
+		"MD024": false,
+		"MD033": false,
+		"MD041": false,
+		"MD046": false
+	},
+	"python.testing.pytestArgs": [
+		"tests"
+	],
+	"python.testing.unittestEnabled": false,
+	"python.testing.pytestEnabled": true,
+	"workbench.editor.empty.hint": "hidden",
+}
