@@ -11,5 +11,9 @@ repos:
         additional_dependencies:
           - pydantic~=2.0
         files: ^annococo/
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: 1.7.0
+    hooks:
+      - id: pyproject-fmt
 ci:
     autoupdate_branch: 'develop'
