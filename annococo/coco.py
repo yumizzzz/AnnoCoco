@@ -42,18 +42,18 @@ class Annotations(BaseModel):
     id: Optional[int]
     image_id: Optional[int]
     category_id: Optional[int]
-    segmentation: Optional[List[List[float]]]
-    area: Optional[float]
+    segmentation: Optional[List[List[float]]] = None
+    area: Optional[float] = None
     bbox: Optional[List[int]]
-    iscrowd: Optional[Literal[0, 1]]
+    iscrowd: Optional[Literal[0, 1]] = None
 
 
 class Licenses(BaseModel):
     """COCOformatのlicensesを管理するクラス"""
 
-    id: Optional[int]
-    name: Optional[str]
-    url: Optional[str]
+    id: Optional[int] = None
+    name: Optional[str] = None
+    url: Optional[str] = None
 
 
 class Categories(BaseModel):
@@ -61,7 +61,7 @@ class Categories(BaseModel):
 
     id: Optional[int]
     name: Optional[str]
-    supercategory: Optional[str]
+    supercategory: Optional[str] = None
 
 
 class COCO:
