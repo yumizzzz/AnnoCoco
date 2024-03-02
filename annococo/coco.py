@@ -84,7 +84,7 @@ class COCO:
         Returns:
             dict[str, Any]: info
         """
-        return self._info.model_dump()
+        return self._info.model_dump(exclude_none=True)
 
     @property
     def images(self) -> List[dict[str, Any]]:
@@ -93,7 +93,7 @@ class COCO:
         Returns:
             list[dict[str, Any]]: images
         """
-        return [image.model_dump() for image in self._images]
+        return [image.model_dump(exclude_none=True) for image in self._images]
 
     @property
     def annotations(self) -> List[dict[str, Any]]:
@@ -102,7 +102,7 @@ class COCO:
         Returns:
             list[dict[str, Any]]: annotations
         """
-        return [annotation.model_dump() for annotation in self._annotations]
+        return [annotation.model_dump(exclude_none=True) for annotation in self._annotations]
 
     @property
     def licenses(self) -> List[dict[str, Any]]:
@@ -111,7 +111,7 @@ class COCO:
         Returns:
             list[dict[str, Any]]: licenses
         """
-        return [license.model_dump() for license in self._licenses]
+        return [license.model_dump(exclude_none=True) for license in self._licenses]
 
     @property
     def categories(self) -> List[dict[str, Any]]:
@@ -120,7 +120,7 @@ class COCO:
         Returns:
             list[dict[str, Any]]: categories
         """
-        return [category.model_dump() for category in self._categories]
+        return [category.model_dump(exclude_none=True) for category in self._categories]
 
     @classmethod
     def load(cls, json_path: Union[str, Path]) -> COCO:
