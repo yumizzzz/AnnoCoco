@@ -12,7 +12,7 @@ from typing import Any, List, Literal, Optional, Union
 from pydantic import BaseModel
 
 
-class Info(BaseModel):
+class InfoModel(BaseModel):
     """COCOformatのinfoを管理するクラス"""
 
     year: Optional[int] = None
@@ -23,7 +23,7 @@ class Info(BaseModel):
     date_created: Optional[str] = None
 
 
-class Images(BaseModel):
+class ImagesModel(BaseModel):
     """COCOformatのimagesを管理するクラス"""
 
     id: int
@@ -36,7 +36,7 @@ class Images(BaseModel):
     date_captured: Optional[str] = None
 
 
-class Annotations(BaseModel):
+class AnnotationsModel(BaseModel):
     """COCOformatのannotationsを管理するクラス"""
 
     id: Optional[int]
@@ -48,7 +48,7 @@ class Annotations(BaseModel):
     iscrowd: Optional[Literal[0, 1]] = None
 
 
-class Licenses(BaseModel):
+class LicensesModel(BaseModel):
     """COCOformatのlicensesを管理するクラス"""
 
     id: Optional[int] = None
@@ -56,7 +56,7 @@ class Licenses(BaseModel):
     url: Optional[str] = None
 
 
-class Categories(BaseModel):
+class CategoriesModel(BaseModel):
     """COCOformatのcategoriesを管理するクラス"""
 
     id: Optional[int]
@@ -64,18 +64,34 @@ class Categories(BaseModel):
     supercategory: Optional[str] = None
 
 
+class COCOModel(BaseModel):
+    """COCOformatのアノテーションデータを管理するクラス"""
+
+    info: InfoModel
+    images: List[ImagesModel]
+    annotations: List[AnnotationsModel]
+    licenses: List[LicensesModel]
+    categories: List[CategoriesModel]
+
+
 class COCO:
     """COCOformatのアノテーションデータを扱うクラス"""
 
-    def __init__(self, json_data: dict):
-        self.json_data = json_data
+    def __init__(self, json_data: dict[str, Any]):
+        self._json_data: dict[str, Any] = json_data
 
-        # COCOformatの各要素を登録
-        self._info: Info = self._registry_info()
-        self._images: List[Images] = self._registry_images()
-        self._annotations: List[Annotations] = self._registry_annotations()
-        self._licenses: List[Licenses] = self._registry_licenses()
-        self._categories: List[Categories] = self._registry_categories()
+        self._info: InfoModel = self._registry_info()
+        self._images: List[ImagesModel] = self._registry_images()
+        self._annotations: List[AnnotationsModel] = self._registry_annotations()
+        self._licenses: List[LicensesModel] = self._registry_licenses()
+        self._categories: List[CategoriesModel] = self._registry_categories()
+        self._coco: COCOModel = COCOModel(
+            info=self._info,
+            images=self._images,
+            annotations=self._annotations,
+            licenses=self._licenses,
+            categories=self._categories,
+        )
 
     @property
     def info(self) -> dict[str, Any]:
@@ -136,6 +152,17 @@ class COCO:
             _json_data = json.load(f)
         return cls(_json_data)
 
+    def dump(self) -> dict[str, Any]:
+        """COCOformat形式のjsonを返す
+
+        Args:
+            indent (int, optional): インデントの数. Defaults to None.
+
+        Returns:
+            str: COCOformat形式のjson
+        """
+        return self._coco.model_dump(exclude_none=True)
+
     def save(self, save_path: Union[str, Path], indent: Optional[int] = None) -> None:
         """json形式でファイル保存
 
@@ -143,59 +170,59 @@ class COCO:
             save_path (str | Path): 保存先のパス
         """
         with open(save_path, "w") as f:
-            json.dump(self.json_data, f, indent=indent)
+            json.dump(self.dump(), f, indent=indent)
 
-    def _registry_info(self) -> Info:
+    def _registry_info(self) -> InfoModel:
         """COCOformatのinfoを登録
 
         Returns:
             Info: 登録したInfoクラス
         """
-        if "info" not in self.json_data:
-            return Info()
+        if "info" not in self._json_data:
+            return InfoModel()
         else:
-            return Info(**self.json_data["info"])
+            return InfoModel(**self._json_data["info"])
 
-    def _registry_images(self) -> List[Images]:
+    def _registry_images(self) -> List[ImagesModel]:
         """COCOformatのimagesを登録
 
         Returns:
             list[Image]: 登録したImageクラスのリスト
         """
-        if "images" not in self.json_data:
+        if "images" not in self._json_data:
             return []
         else:
-            return [Images(**image) for image in self.json_data["images"]]
+            return [ImagesModel(**image) for image in self._json_data["images"]]
 
-    def _registry_annotations(self) -> List[Annotations]:
+    def _registry_annotations(self) -> List[AnnotationsModel]:
         """COCOformatのannotationsを登録
 
         Returns:
             list[Annotations]: 登録したAnnotationsクラスのリスト
         """
-        if "annotations" not in self.json_data:
+        if "annotations" not in self._json_data:
             return []
         else:
-            return [Annotations(**annotation) for annotation in self.json_data["annotations"]]
+            return [AnnotationsModel(**annotation) for annotation in self._json_data["annotations"]]
 
-    def _registry_licenses(self) -> List[Licenses]:
+    def _registry_licenses(self) -> List[LicensesModel]:
         """COCOformatのlicensesを登録
 
         Returns:
             list[Licenses]: 登録したLicensesクラスのリスト
         """
-        if "licenses" not in self.json_data:
+        if "licenses" not in self._json_data:
             return []
         else:
-            return [Licenses(**license) for license in self.json_data["licenses"]]
+            return [LicensesModel(**license) for license in self._json_data["licenses"]]
 
-    def _registry_categories(self) -> List[Categories]:
+    def _registry_categories(self) -> List[CategoriesModel]:
         """COCOformatのcategoriesを登録
 
         Returns:
             list[Categories]: 登録したCategoriesクラスのリスト
         """
-        if "categories" not in self.json_data:
+        if "categories" not in self._json_data:
             return []
         else:
-            return [Categories(**category) for category in self.json_data["categories"]]
+            return [CategoriesModel(**category) for category in self._json_data["categories"]]
