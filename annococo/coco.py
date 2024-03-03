@@ -153,13 +153,10 @@ class COCO:
         return cls(_json_data)
 
     def dump(self) -> dict[str, Any]:
-        """COCOformat形式のjsonを返す
-
-        Args:
-            indent (int, optional): インデントの数. Defaults to None.
+        """COCOformat形式のdictに変換
 
         Returns:
-            str: COCOformat形式のjson
+            dict[str, Any]: COCOformat形式のdict
         """
         return self._coco.model_dump(exclude_none=True)
 
